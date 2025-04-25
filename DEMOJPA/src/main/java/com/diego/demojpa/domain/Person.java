@@ -24,7 +24,8 @@ public class Person {
     public Person() {
     }
     
-    public Person(String name, String lastName, String language) {
+    public Person(Long id, String name, String lastName, String language) {
+        this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.language = language;
