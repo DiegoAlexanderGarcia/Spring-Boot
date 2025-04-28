@@ -1,4 +1,4 @@
-package com.diego.demojpa.repositiry;
+package com.diego.demojpa.infrastructure.repositiry;
 
 import java.util.List;
 
@@ -8,6 +8,6 @@ import com.diego.demojpa.domain.Person;
 
 public interface PersonRepository extends JpaRepository<Person, Long> {
     List<Person> findByNameContains(String name);
-    //List<Person> findByLanguageEquals(String name);
-    //List<Person> findByLastNameList(String name);
+    List<Person> findByLanguageEquals(String name);
+    
 }

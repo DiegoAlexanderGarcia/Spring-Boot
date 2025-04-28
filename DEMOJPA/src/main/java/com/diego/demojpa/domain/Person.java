@@ -1,14 +1,23 @@
 package com.diego.demojpa.domain;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "personas")
+//bidreccional
+//many to many
+//many to one
+//one to many
+//one to one
+//enbedable - que son y cuando usarelas?
 public class Person {
 
     @Id
@@ -20,6 +29,9 @@ public class Person {
 
     @Column(name = "programing_language")
     private String language;
+
+    @OneToMany
+    private List<Rol> rol;
 
     public Person() {
     }
@@ -54,5 +66,11 @@ public class Person {
     }
     public void setLanguage(String language) {
         this.language = language;
+    }
+    public List<Rol> getRol() {
+        return rol;
+    }
+    public void setRol(List<Rol> rol) {
+        this.rol = rol;
     }
 }
