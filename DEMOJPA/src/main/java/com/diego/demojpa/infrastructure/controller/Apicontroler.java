@@ -6,12 +6,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.diego.demojpa.application.service.PersonService;
 import com.diego.demojpa.domain.Person;
-import com.diego.demojpa.domain.Rol;
+import com.diego.demojpa.domain.project;
+import com.diego.demojpa.infrastructure.repositiry.ProyectService;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 
 @RestController
@@ -22,9 +26,12 @@ public class Apicontroler {
     // /api/buscar
 
     private final PersonService personService;
+    private final ProyectService proyectService;
 
-    public Apicontroler(PersonService personService) {
+    public Apicontroler(PersonService personService, ProyectService proyectService) {
         this.personService = personService;
+        this.proyectService = proyectService;
+
     }
 
     @GetMapping("/users")
@@ -39,15 +46,20 @@ public class Apicontroler {
         return result;
     }
 
-    @GetMapping("/roles")
-    public List<Rol> findAllRoles(
+    @PostMapping("/roles")
+    public Map<String, String> newRoles(){
+        return Map.of("name", "Rol", "description", "Rol de usuario", "id", "0");
+    }
+
+
+    @GetMapping("/projects")
+    public List<project> findAllProjects(
         @RequestParam(name = "filter", defaultValue = "") String filter,
         @RequestParam(name = "value", defaultValue = "0") String value
         ) {
-        // /api/users?filter=name&value=Diego
-        // /api/users?filter=language&value=Java
-        List<Rol> result = personService.findAllRolesByFilter(filter, value);
+        List<project> result = proyectService.findAllProjects();
  
         return result;
     }
+
 }
