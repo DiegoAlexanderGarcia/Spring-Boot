@@ -55,7 +55,7 @@ public class Person {
     // @JsonIgnore //alternativa a JsonBackReference, pero no se puede usar en el mismo lado de la relación
     private Rol role;
 
-    @OneToOne(mappedBy = "person")
+    @OneToOne(mappedBy = "person", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private pasport pasport;
 

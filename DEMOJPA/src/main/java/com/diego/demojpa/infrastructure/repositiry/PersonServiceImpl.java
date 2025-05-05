@@ -9,6 +9,8 @@ import com.diego.demojpa.domain.Person;
 import com.diego.demojpa.domain.Rol;
 import com.diego.demojpa.infrastructure.error.RolDuplicateExeption;
 
+import jakarta.persistence.EntityNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +19,9 @@ public class PersonServiceImpl implements PersonService {
     
 
     private final PersonRepository personRepository;
-    private final RoleRepository roleRepository;
 
     public PersonServiceImpl(PersonRepository personRepository, RoleRepository roleRepository) {
         this.personRepository = personRepository;
-        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -33,25 +33,24 @@ public class PersonServiceImpl implements PersonService {
         }
             return personRepository.findAll();
     }
-    @Override
-    public List<Rol> findAllRolesByFilter(String filter, String value) {
-        return roleRepository.findAll();
-    }
 
     @Override
-    public Rol createNewRol(String name) {
-        Rol newRol = new Rol();
-        newRol.setName(name);
+    public Person patchPerson(Long id, Person personDto) {
+        Optional<Person> person = personRepository.findById(id)
+        .orElseThrow(()-> new EntityNotFoundException("no se encontro el usuario solicitado"));
 
-        if(getRolByName(name).isPresent()){
-            throw new RolDuplicateExeption("El rol: " + name +" ya existe", HttpStatus.INTERNAL_SERVER_ERROR);
-            
+        if (personDto.getName() != null) {
+            person.get().setName(personDto.getName());
         }
 
-        return roleRepository.save(newRol); 
-    }
+        if (personDto.getLastName() != null) {
+            person.get().setLastName(personDto.getLastName());
+        }
 
-    private Optional<Rol> getRolByName(String rolName) {
-        return roleRepository.findByName(rolName);
+        if (personDto.getLanguage() != null) {
+            person.get().setLanguage(personDto.getLanguage());
+        }
+        personRepository.save(person);
+        return person;
     }
 }

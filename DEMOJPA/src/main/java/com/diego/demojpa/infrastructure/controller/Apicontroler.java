@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.diego.demojpa.application.service.PersonService;
+import com.diego.demojpa.application.service.RolService;
 import com.diego.demojpa.domain.Person;
 import com.diego.demojpa.domain.Rol;
 import com.diego.demojpa.domain.RoleRequest;
 import com.diego.demojpa.domain.project;
+import com.diego.demojpa.domain.dto.PersonRequest;
 import com.diego.demojpa.infrastructure.repositiry.ProyectService;
 
 import jakarta.validation.Valid;
@@ -19,7 +21,10 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -35,9 +40,11 @@ public class Apicontroler {
 
     private final PersonService personService;
     private final ProyectService proyectService;
+    private final RolService rolService;
 
-    public Apicontroler(PersonService personService, ProyectService proyectService) {
+    public Apicontroler(PersonService personService, RolService rolService, ProyectService proyectService) {
         this.personService = personService;
+        this.rolService = rolService;
         this.proyectService = proyectService;
 
     }
@@ -54,6 +61,12 @@ public class Apicontroler {
         return result;
     }
 
+    @PatchMapping("/users/{Id}")
+    public ResponseEntity<Person> parcialUpdatePerson(@patchVariable Long id, @RequestBody PersonRequest personDto){
+
+        return ResponseEntity.badRequest().build();
+    }
+
 
     @GetMapping("/roles")
     public List<Rol>finAllRoles(
@@ -62,7 +75,7 @@ public class Apicontroler {
         ) {
         // /api/roles?filter=name&value=Diego
         // /api/roles?filter=language&value=Java
-        List<Rol> result = personService.findAllRolesByFilter(filter, value);
+        List<Rol> result = rolService.findAllRolesByFilter(filter, value);
  
         return result;
     }
@@ -71,8 +84,14 @@ public class Apicontroler {
     @PostMapping("/roles")
     @ResponseStatus(HttpStatus.CREATED)
     public Rol newRole(@Valid @RequestBody RoleRequest role){
-        return personService.createNewRol(role.getName());
+        return rolService.createNewRol(role.getName());
     }
+
+    @DeleteMapping("/roles/{Id}")
+    public ResponseEntity<Rol> removeRol (@PathVariable(name = "Id") Long id){
+        return ResponseEntity.ok().body(rolService.removeRol(id));
+    }
+
 
   
     @GetMapping("/projects")

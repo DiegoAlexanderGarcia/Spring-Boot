@@ -5,12 +5,11 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.diego.demojpa.infrastructure.error.model.fielError;
+import com.diego.demojpa.infrastructure.error.model.FieldError;
 
 @RestControllerAdvice
 public class GlobalErrorHanbler {
@@ -29,7 +28,7 @@ public class GlobalErrorHanbler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handlefieldsException(MethodArgumentNotValidException e){
-        List<fielError> fieldErrors = e.getFieldErrors().stream()
+        List<FieldError> fieldErrors = e.getFieldErrors().stream()
         .map(field -> new FieldError(field.getField(), field.getDefaultMessage())) 
         .toList();
         return ResponseEntity.badRequest().body(fieldErrors);

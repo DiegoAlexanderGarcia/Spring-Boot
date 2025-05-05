@@ -1,10 +1,10 @@
 package com.diego.demojpa.infrastructure.error.model;
 
-public class fielError {
+public class FieldError {
     private String field;
     private String error;
 
-    public fielError(String field, String error) {
+    public FieldError(String field, String error) {
         this.field = field;
         this.error = error;
     }
