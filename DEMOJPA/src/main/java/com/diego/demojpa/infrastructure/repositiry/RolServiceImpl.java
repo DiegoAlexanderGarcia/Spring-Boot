@@ -3,8 +3,6 @@ package com.diego.demojpa.infrastructure.repositiry;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.text.html.parser.Entity;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.diego.demojpa.application.service.RolService;
